@@ -5,7 +5,12 @@ module SuperbTextConstructor
         extend ActiveSupport::Concern
 
         included do
-          serialize :data
+          serialize :data, Hash
+
+          SuperbTextConstructor.uploaders.each do |field, uploader|
+            mount_uploader field.to_sym, uploader.constantize, serialize_to: :data
+          end
+
           belongs_to :blockable, polymorphic: true
 
           default_scope -> { order(position: :asc) }
@@ -17,12 +22,16 @@ module SuperbTextConstructor
           validates :position, presence: true, numericality: { only_integer: true, greater_than: 0 }
           validates :template, presence: true, inclusion: { in: SuperbTextConstructor.templates }
           SuperbTextConstructor.fields.each do |field|
-            validates field.to_sym, presence: true, if: -> (block) { block.fields[field].try(:fetch, 'required', nil) == true }
+            validates field.to_sym, presence: true, if: "#{field}_required?".to_sym
           end
         end
 
         # Define methods for reading/writing serialized data
         SuperbTextConstructor.fields.each do |field|
+          define_method "#{field}_required?" do
+            fields[field].try(:fetch, 'required', nil) == true
+          end
+
           next if method_defined?(field)
 
           define_method field do

@@ -3,6 +3,10 @@ require 'superb_text_constructor/view_helpers/render_blocks_helper'
 require 'superb_text_constructor/view_helpers/sanitize_block_helper'
 require 'superb_text_constructor/route_mappings'
 
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
+require 'carrierwave-serializable'
+
 module SuperbTextConstructor
   DEFAULTS = {
     configs_path: nil,
@@ -37,6 +41,17 @@ module SuperbTextConstructor
   # @return [Array<String] list of available fields for all blocks
   def self.fields
     blocks.map { |block, options| (options || {}).fetch('fields', {}).keys }.flatten.uniq
+  end
+
+  # @return [Array<String] list of available fields for all blocks
+  def self.uploaders
+    result = {}
+    blocks.each do |_, options|
+      (options || {}).fetch('fields', {}).each do |field, options|
+        result[field] = options['uploader'] if options['uploader'].present?
+      end
+    end
+    result
   end
 
   # @return [Array<String] list of available block names

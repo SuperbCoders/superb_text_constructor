@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-rails'
   s.add_dependency 'sass-rails', '~> 4.0.0'
   s.add_dependency 'coffee-rails', '~> 4.0.0'
+  s.add_dependency 'carrierwave'
+  s.add_dependency 'carrierwave-serializable'
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'factory_girl_rails'

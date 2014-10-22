@@ -17,6 +17,12 @@ blocks:
         type: text
         required: true
   separator:
+  image:
+    fields:
+      image:
+        type: image
+        uploader: SuperbTextConstructor::DefaultUploader
+        required: true
 
 namespaces:
   default:
@@ -26,7 +32,9 @@ namespaces:
     no_group:
       - text
       - separator
+      - image
   no_headers:
     no_group:
       - text
       - separator
+      - image

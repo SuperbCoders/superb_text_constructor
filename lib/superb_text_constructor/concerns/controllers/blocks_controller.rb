@@ -92,6 +92,7 @@ module SuperbTextConstructor
           # @return [Array<Symbol>] attributes that are always permitted for mass assignment
           def default_permitted_attributes
             permitted_attributes = SuperbTextConstructor.fields.map(&:to_sym)
+            SuperbTextConstructor.uploaders.each { |field, _| permitted_attributes << "remove_#{field}".to_sym }
             permitted_attributes << :template
             permitted_attributes
           end
