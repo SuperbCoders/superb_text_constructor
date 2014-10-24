@@ -1,0 +1,22 @@
+en:
+  activerecord:
+    attributes:
+      block:
+        text: Text
+        image: Image
+
+  superb_text_constructor:
+    blocks:
+      h2: H2
+      h3: H3
+      text: Text
+      separator: Separator
+      image: Image
+
+    groups:
+
+    shared:
+      back: Back
+      save: Save
+      are_you_sure: Are you sure?
+      remove: Remove

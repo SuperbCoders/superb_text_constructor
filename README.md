@@ -12,7 +12,9 @@ And then execute:
 
     $ bundle
 
-@todo Create generators and write full installation guide
+Run the install generator:
+
+    $ rails g superb_text_constructor:install
 
 ## Configuration
 
