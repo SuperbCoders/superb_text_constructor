@@ -5,22 +5,20 @@
 </div>
 
 <div class="container">
-  <% SuperbTextConstructor.namespaces[@namespace].each do |group, blocks| %>
-    <% if group == 'no_group' %>
-      <% blocks.each do |block, options| %>
-        <%= link_to t("superb_text_constructor.blocks.#{block}"), new_block_path(template: block), class: 'btn btn-default' %>
-      <% end %>
-    <% else %>
+  <% SuperbTextConstructor.blocks_for(@namespace).each do |block| %>
+    <% if block.is_a?(SuperbTextConstructor::Namespace) %>
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          <%= t("superb_text_constructor.groups.#{group}") %> <span class="caret"></span>
+          <%= t("superb_text_constructor.groups.#{block.name}") %> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-          <% blocks.each do |block, options| %>
-           <li><%= link_to t("superb_text_constructor.blocks.#{block}"), new_block_path(template: block) %></li>
+          <% block.blocks.each do |block| %>
+           <li><%= link_to t("superb_text_constructor.blocks.#{block.template}"), new_block_path(type: block.name_without_namespace) %></li>
           <% end %>
         </ul>
       </div>
+    <% else %>
+      <%= link_to t("superb_text_constructor.blocks.#{block.template}"), new_block_path(type: block.name_without_namespace), class: 'btn btn-default' %>
     <% end %>
   <% end %>
 </div>

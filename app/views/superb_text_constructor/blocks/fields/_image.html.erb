@@ -1,16 +1,16 @@
 <div class="form-group">
-  <%= f.label field.to_sym, class: 'col-sm-2 control-label' %>
+  <%= f.label field.name.to_sym, class: 'col-sm-2 control-label' %>
   <div class="col-sm-10">
-    <%= f.file_field field.to_sym, class: 'form-control' %>
-    <% if f.object.send("#{field}?") %>
-      <% unless f.object.send("#{field}_required?") %>
+    <%= f.file_field field.name.to_sym, class: 'form-control' %>
+    <% if f.object.send("#{field.name}?") %>
+      <% unless field.required? %>
         <label>
-          <%= f.check_box "remove_#{field}".to_sym %>
-          <%= t('shared.remove') %>
+          <%= f.check_box "remove_#{field.name}".to_sym %>
+          <%= t('superb_text_constructor.shared.remove') %>
         </label>
       <% end %>
       <div>
-        <%= image_tag f.object.send(field).url, width: '500px' %>
+        <%= image_tag f.object.send(field.name).url, width: '500px' %>
       </div>
     <% end %>
   </div>

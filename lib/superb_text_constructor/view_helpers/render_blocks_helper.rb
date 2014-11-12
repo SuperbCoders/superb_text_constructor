@@ -32,7 +32,7 @@ module SuperbTextConstructor
           if options[:namespace] && lookup_context.template_exists?("superb_text_constructor/blocks/#{options[:namespace]}/#{block.template}", nil, true)
             "superb_text_constructor/blocks/#{options[:namespace]}/#{block.template}"
           else
-            "superb_text_constructor/blocks/#{SuperbTextConstructor.configuration.default_namespace}/#{block.template}"
+            "superb_text_constructor/blocks/#{SuperbTextConstructor.default_namespace.name}/#{block.template}"
           end
         end
 

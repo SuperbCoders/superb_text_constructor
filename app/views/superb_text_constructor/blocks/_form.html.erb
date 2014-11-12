@@ -1,9 +1,10 @@
 <div class="container">
-  <%= form_for @block, html: { class: 'form-horizontal' } do |f| %>
-    <%= f.hidden_field :template %>
+  <%= form_for @block, url: @block.new_record? ? blocks_path : block_path(@block), html: { class: 'form-horizontal' } do |f| %>
+    <%= hidden_field_tag :type, @block.type %>
+    <%= f.hidden_field :type %>
 
-    <% @block.fields.each do |field, options| %>
-      <%= render partial: "superb_text_constructor/blocks/fields/#{options['type']}", locals: { f: f, field: field, options: options } %>
+    <% @block.fields.each do |field| %>
+      <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: f, field: field } %>
     <% end %>
 
     <div class="form-group">

@@ -1,78 +1,60 @@
+# Rails stuff
 require 'superb_text_constructor/engine'
 require 'superb_text_constructor/view_helpers/render_blocks_helper'
 require 'superb_text_constructor/view_helpers/sanitize_block_helper'
 require 'superb_text_constructor/route_mappings'
 
+# Carrierwave stuff
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
 require 'carrierwave-serializable'
 
+# Internal classes
+require 'superb_text_constructor/namespace'
+require 'superb_text_constructor/field'
+
+# Concerns
+require 'superb_text_constructor/concerns/models/block'
+require 'superb_text_constructor/concerns/models/blockable'
+require 'superb_text_constructor/concerns/controllers/blocks_controller'
+
 module SuperbTextConstructor
-  DEFAULTS = {
-    configs_path: nil,
-    default_namespace: 'default',
-    additional_permitted_attributes: nil
-  }
-
-  mattr_accessor :configuration
-  self.configuration = OpenStruct.new
-
-  DEFAULTS.each do |key, value|
-    self.configuration.send("#{key}=", value)
-  end
 
   def self.configure(&block)
-    yield(self.configuration)
-    require 'superb_text_constructor/concerns/models/block'
-    require 'superb_text_constructor/concerns/models/blockable'
-    require 'superb_text_constructor/concerns/controllers/blocks_controller'
+    instance_eval(&block)
   end
 
-  # @return [Hash] all available blocks in all namespaces
-  def self.blocks
-    config['blocks'] || {}
+  def self.namespace(name, &block)
+    namespace = SuperbTextConstructor::Namespace.new(name, &block)
+    namespaces << namespace
+    namespace
   end
 
-  # @return [Array<Hash>] list of available namespaces
   def self.namespaces
-    config['namespaces'] || {}
+    @namespaces ||= []
   end
 
-  # @return [Array<String] list of available fields for all blocks
-  def self.fields
-    blocks.map { |block, options| (options || {}).fetch('fields', {}).keys }.flatten.uniq
+  def self.default_namespace
+    namespaces.first
   end
 
-  # @return [Array<String] list of available fields for all blocks
-  def self.uploaders
-    result = {}
-    blocks.each do |_, options|
-      (options || {}).fetch('fields', {}).each do |field, options|
-        result[field] = options['uploader'] if options['uploader'].present?
-      end
-    end
-    result
+  # @param name [Symbol] name of the namespace
+  # @return [Array<Block, Namespace>] list of blocks and nested namespaces
+  # @raise [Error] if namespace with the specified name does not exist
+  def self.blocks_for(name)
+    ns = namespaces.select { |ns| ns.name.to_s == name.to_s }.first
+    raise 'Unknown namespace' unless ns
+    ns.blocks
   end
 
-  # @return [Array<String] list of available block names
-  def self.templates
-    blocks.keys
+  # @param name [Symbol] name of the block
+  # @yield DSL definiton of the block
+  # @return [Class] defined block
+  def self.block(name, &block)
+    klass_name = name.to_s.camelize
+    klass = SuperbTextConstructor.const_set(klass_name, Class.new(SuperbTextConstructor::Block))
+    klass.class_eval(&block) if block_given?
+    klass
   end
-
-  private
-
-    def self.config
-      @config ||= read_config
-    end
-
-    # Reads all config files and merges them to one Hash
-    # @return [Hash] merged configs
-    def self.read_config
-      result = {}
-      [self.configuration.configs_path].flatten.each do |file_path|
-        result.deep_merge!(YAML.load_file(file_path))
-      end
-      result
-    end
 
 end

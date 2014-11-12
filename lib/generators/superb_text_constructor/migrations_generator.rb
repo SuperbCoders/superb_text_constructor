@@ -9,7 +9,7 @@ module SuperbTextConstructor
       argument :name, type: :string, default: 'create_blocks'
 
       def copy_migrations
-        migration_template 'migrations/create_blocks.rb', 'db/migrate/create_blocks.rb'
+        migration_template 'migrations/create_superb_text_constructor_blocks.rb', 'db/migrate/create_superb_text_constructor_blocks.rb'
       end
 
     end
