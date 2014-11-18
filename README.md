@@ -181,6 +181,22 @@ In the examples above blocks' views should be placed at `app/view/superb_text_co
 
 The first defined namespace is the default namespace. It means that if the partial could not be found in namespace directory, partial from the default namespace will be used.
 
+### Groups
+
+You can group similar blocks in WYSIWYG editor:
+
+    namespace :default do
+      # ...
+      group :images do
+        use :image
+        use :gallery
+        use :slideshow
+      end
+      # ...
+    end
+
+These controls will be grouped and will be represented in WYSIWYG editor as the single dropdown button.
+
 ## Usage
 
 Follow the steps below to add WYSIWYG editor to your model.
