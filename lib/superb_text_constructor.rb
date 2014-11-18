@@ -9,6 +9,9 @@ require 'carrierwave'
 require 'carrierwave/orm/activerecord'
 require 'carrierwave-serializable'
 
+# Nested form stuff
+require 'nested_form'
+
 # Internal classes
 require 'superb_text_constructor/namespace'
 require 'superb_text_constructor/field'

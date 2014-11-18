@@ -82,6 +82,16 @@ module SuperbTextConstructor
             fields << field
           end
 
+          def nested_blocks(name, options = {}, &block)
+            nested_name = name.to_sym
+            full_name = "#{template}_#{nested_name.to_s.underscore.singularize}"
+            klass = SuperbTextConstructor.block(full_name, &block)
+            field = SuperbTextConstructor::Field.new(nested_name, type: klass, partial: 'nested')
+            has_many nested_name, class_name: klass.name, as: :blockable, dependent: :destroy, inverse_of: :blockable
+            accepts_nested_attributes_for name, allow_destroy: true
+            fields << field
+          end
+
           def fields
             @fields ||= []
           end
@@ -99,11 +109,16 @@ module SuperbTextConstructor
 
           # Adds new block to the end of list (with max+1 position)
           def set_position
-            self.position = blockable.reload.blocks.map(&:position).max.to_i + 1
+            if self.class.superclass == SuperbTextConstructor::Block
+              self.position = 1
+            else
+              self.position = blockable.reload.blocks.map(&:position).max.to_i + 1
+            end
           end
 
           # Recalculates positions for the blocks after destroyed block
           def recalculate_positions
+            return true if self.class.superclass == SuperbTextConstructor::Block
             blocks = blockable.reload.blocks.where('position > ?', position)
             blocks.each_with_index do |block, index|
               block.update_column(:position, position + index)

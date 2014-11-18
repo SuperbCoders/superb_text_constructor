@@ -12,8 +12,11 @@ en:
       text: Text
       separator: Separator
       image: Image
+      gallery: Gallery
 
     groups:
+      headers: Headers
+      images: Images
 
     shared:
       back: Back

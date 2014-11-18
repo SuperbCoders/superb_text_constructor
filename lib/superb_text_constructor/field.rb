@@ -4,7 +4,7 @@ module SuperbTextConstructor
     # @return [Hash] default values of field options
     DEFAULTS = {
       type: String,
-      required: false,
+      required: false
     }
 
     attr_reader :name
@@ -12,6 +12,7 @@ module SuperbTextConstructor
     def initialize(name, options = {})
       @name = name
       type(options[:type] || DEFAULTS[:type])
+      partial(options[:partial]) if options[:partial].present?
       required(options[:required].nil? ? DEFAULTS[:required] : options[:required])
     end
 
@@ -45,6 +46,10 @@ module SuperbTextConstructor
         @partial = value
         self
       end
+    end
+
+    def nested?
+      partial == 'nested'
     end
   end
 end

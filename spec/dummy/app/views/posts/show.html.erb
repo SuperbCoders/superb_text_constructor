@@ -2,11 +2,7 @@
 
 <p>Title: <%= @post.title %></p>
 
-<h1>Default:</h1>
 <%= render_blocks @post.blocks %>
-
-<h1>Without headers:</h1>
-<%= render_blocks @post.blocks, namespace: :no_headers %>
 
 <div>
   <%= link_to 'Edit', edit_post_path(@post) %> |

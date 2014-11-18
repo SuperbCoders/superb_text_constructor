@@ -32,6 +32,16 @@ SuperbTextConstructor.configure do
     end
   end
 
+  block :gallery do
+    nested_blocks :images do
+      field :image do
+        type SuperbTextConstructor::DefaultUploader
+        partial :image
+        required
+      end
+    end
+  end
+
   block :separator
 
   namespace :default do
@@ -39,9 +49,12 @@ SuperbTextConstructor.configure do
       use :h2
       use :h3
     end
+    group :images do
+      use :image
+      use :gallery
+    end
     use :text
     use :separator
-    use :image
   end
 
 end

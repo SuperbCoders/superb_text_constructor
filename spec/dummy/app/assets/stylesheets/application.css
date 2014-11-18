@@ -11,5 +11,7 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require superb_text_constructor/bootstrap
+ *= require superb_text_constructor/_bootstrap-sprockets
  *= require_self
  */

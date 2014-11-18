@@ -1,10 +1,22 @@
 <div class="container">
-  <%= form_for @block, url: @block.new_record? ? blocks_path : block_path(@block), html: { class: 'form-horizontal' } do |f| %>
+  <%= nested_form_for @block, url: @block.new_record? ? blocks_path : block_path(@block), html: { class: 'form-horizontal' } do |f| %>
     <%= hidden_field_tag :type, @block.type %>
     <%= f.hidden_field :type %>
 
     <% @block.fields.each do |field| %>
-      <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: f, field: field } %>
+      <% if field.nested? %>
+        <%= f.fields_for field.name.to_sym do |ff| %>
+          <div class="well fields">
+            <% field.type.fields.each do |field| %>
+              <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: ff, field: field } %>
+            <% end %>
+            <%= ff.link_to_remove t('superb_text_constructor.shared.remove'), class: 'btn btn-sm btn-danger' %>
+          </div>
+        <% end %>
+        <%= f.link_to_add t('superb_text_constructor.shared.add'), field.name.to_sym, class: 'btn btn-sm btn-success' %>
+      <% else %>
+        <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: f, field: field } %>
+      <% end %>
     <% end %>
 
     <div class="form-group">
