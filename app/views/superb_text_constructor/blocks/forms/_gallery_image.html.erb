@@ -1,0 +1,12 @@
+<div class="col-md-2">
+  <div class="thumbnail nested-block">
+    <%= image_tag block.image.square_thumb %>
+    <div class="caption">
+      <p>
+        <%= link_to block_path(block), method: :delete, remote: true, class: 'destroy btn btn-danger' do %>
+          <i class="glyphicon glyphicon-trash"></i>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</div>

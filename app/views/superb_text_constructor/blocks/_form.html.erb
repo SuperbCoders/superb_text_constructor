@@ -1,29 +1,24 @@
-<div class="container">
-  <%= nested_form_for @block, url: @block.new_record? ? blocks_path : block_path(@block), html: { class: 'form-horizontal' } do |f| %>
-    <%= hidden_field_tag :type, @block.type %>
-    <%= f.hidden_field :type %>
+<%= form_for block, url: block_path(block), remote: true, html: { class: 'form-horizontal block-form' } do |f| %>
+  <%= hidden_field_tag :type, block.type %>
+  <%= f.hidden_field :type %>
 
-    <% @block.fields.each do |field| %>
-      <% if field.nested? %>
-        <%= f.fields_for field.name.to_sym do |ff| %>
-          <div class="well fields">
-            <% field.type.fields.each do |field| %>
-              <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: ff, field: field } %>
-            <% end %>
-            <%= ff.link_to_remove t('superb_text_constructor.shared.remove'), class: 'btn btn-sm btn-danger' %>
-          </div>
-        <% end %>
-        <%= f.link_to_add t('superb_text_constructor.shared.add'), field.name.to_sym, class: 'btn btn-sm btn-success' %>
-      <% else %>
-        <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: f, field: field } %>
-      <% end %>
-    <% end %>
-
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit t('superb_text_constructor.shared.save'), class: 'btn btn-primary' %>
-        <%= link_to t('superb_text_constructor.shared.back'), root_path, class: 'btn' %>
-      </div>
-    </div>
+  <% block.fields.reject(&:nested?).each do |field| %>
+    <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: f, field: field } %>
   <% end %>
-</div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit t('superb_text_constructor.shared.save'), class: 'btn btn-primary' %>
+      <%= link_to t('superb_text_constructor.shared.cancel'), '#', class: 'cancel-edit btn' %>
+    </div>
+  </div>
+<% end %>
+
+<% block.fields.select(&:nested?).each do |field| %>
+  <div class="nested-blocks">
+    <% block.send(field.name).each do |nested_block| %>
+      <%= render partial: 'superb_text_constructor/blocks/nested_fields', object: nested_block, as: :block %>
+    <% end %>
+    <%= link_to t('superb_text_constructor.shared.add'), create_nested_block_path(block, association: field.name, type: field.type.name), remote: true, method: :post, class: 'new-nested-block btn btn-sm btn-success' %>
+  </div>
+<% end %>

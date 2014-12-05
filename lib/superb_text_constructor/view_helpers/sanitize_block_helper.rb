@@ -6,7 +6,7 @@ module SuperbTextConstructor
       # @param text [String] original text
       # @return [ActiveSupport::SafeBuffer] HTML safe text with permitted only tags
       def sanitize_block(text)
-        sanitize(text, tags: %w(a b i img span br), attributes: %w(id class style src href target))
+        sanitize(text.to_s, tags: %w(a b i img span br), attributes: %w(id class style src href target))
       end
 
 

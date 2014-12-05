@@ -1,6 +1,13 @@
 <div id="<%= block.id %>" class="block row well">
   <div class="col-lg-11">
-    <%= render partial: "superb_text_constructor/blocks/editor/#{block.template}", object: block, as: :block %>
+    <div class="content">
+      <%= render partial: "superb_text_constructor/blocks/editor/#{block.template}", object: block, as: :block %>
+    </div>
+    <% unless block.auto? %>
+      <div class="form" style="display:none;">
+        <%= render_form block %>
+      </div>
+    <% end %>
   </div>
 
   <div class="col-lg-1 text-center">
@@ -10,15 +17,17 @@
 
     <div>
       <% unless block.auto? %>
-        <%= link_to edit_block_path(block) do %>
+        <%= link_to '#', class: 'edit' do %>
           <i class="glyphicon glyphicon-edit"></i>
         <% end %>
       <% end %>
 
-      <%= link_to block_path(block), method: :delete, data: { confirm: t('superb_text_constructor.shared.are_you_sure') } do %>
+      <%= link_to block_path(block), method: :delete, remote: true, class: 'destroy', data: { confirm: t('superb_text_constructor.shared.are_you_sure') } do %>
         <i class="glyphicon glyphicon-trash"></i>
       <% end %>
+
+      <i class="drag-handle glyphicon glyphicon-fullscreen"></i>
+
     </div>
   </div>
-
 </div>

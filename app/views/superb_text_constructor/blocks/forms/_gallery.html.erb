@@ -1,0 +1,25 @@
+<%= form_tag create_nested_block_path(block, association: 'images', type: 'SuperbTextConstructor::GalleryImage'), method: :post do %>
+  <div class="row thumbnails dropzone">
+    
+    <% block.images.each do |image| %>
+      <%= render partial: 'superb_text_constructor/blocks/forms/gallery_image', object: image, as: :block %>
+    <% end %>
+
+    <div class="col-md-2">
+      <div class="thumbnail last">
+        <%= file_field_tag :image, name: 'gallery_image[image]', multiple: true, class: 'gallery-fileupload', data: { upload_field: :images } %>
+      </div>
+    </div>
+      
+  </div>
+<% end %>
+
+<%= form_for block, url: block_path(block), remote: true, html: { class: 'form-horizontal block-form' } do |f| %>
+  <%= hidden_field_tag :type, block.type %>
+  <%= f.hidden_field :type %>
+  <%= f.submit t('superb_text_constructor.shared.save'), class: 'btn btn-primary' %>
+<% end %>
+
+<script>
+  initGalleryFileupload();
+</script>

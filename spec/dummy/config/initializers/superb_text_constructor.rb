@@ -26,7 +26,7 @@ SuperbTextConstructor.configure do
 
   block :image do
     field :image do
-      type SuperbTextConstructor::DefaultUploader
+      type SuperbTextConstructor::ImageUploader
       partial :image
       required
     end
@@ -35,7 +35,7 @@ SuperbTextConstructor.configure do
   block :gallery do
     nested_blocks :images do
       field :image do
-        type SuperbTextConstructor::DefaultUploader
+        type SuperbTextConstructor::ImageUploader
         partial :image
         required
       end

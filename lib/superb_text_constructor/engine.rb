@@ -4,6 +4,7 @@ module SuperbTextConstructor
 
     initializer 'superb_text_constructor.view_helpers' do |app|
       ActionView::Base.send :include, SuperbTextConstructor::ViewHelpers::RenderBlocksHelper
+      ActionView::Base.send :include, SuperbTextConstructor::ViewHelpers::EditorHelper
       ActionView::Base.send :include, SuperbTextConstructor::ViewHelpers::SanitizeBlockHelper
     end
 

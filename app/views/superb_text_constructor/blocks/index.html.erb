@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="blocks" data-reorder-url="<%= reorder_blocks_path %>">
+  <div id="blocks" class="blocks" data-reorder-url="<%= reorder_blocks_path %>">
     <%= render partial: 'superb_text_constructor/blocks/editor/block', collection: @blocks, as: :block %>
   </div>
 </div>
@@ -13,12 +13,12 @@
         </button>
         <ul class="dropdown-menu" role="menu">
           <% block.blocks.each do |block| %>
-           <li><%= link_to t("superb_text_constructor.blocks.#{block.template}"), new_block_path(type: block.name_without_namespace) %></li>
+           <li><%= link_to t("superb_text_constructor.blocks.#{block.template}"), blocks_path(type: block.name_without_namespace), remote: true, method: :post, class: 'new-block' %></li>
           <% end %>
         </ul>
       </div>
     <% else %>
-      <%= link_to t("superb_text_constructor.blocks.#{block.template}"), new_block_path(type: block.name_without_namespace), class: 'btn btn-default' %>
+      <%= link_to t("superb_text_constructor.blocks.#{block.template}"), blocks_path(type: block.name_without_namespace), remote: true, method: :post, class: 'btn btn-default new-block' %>
     <% end %>
   <% end %>
 </div>

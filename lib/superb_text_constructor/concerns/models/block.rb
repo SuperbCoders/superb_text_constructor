@@ -75,9 +75,10 @@ module SuperbTextConstructor
             end
 
             # Describe validations
-            if field.required?
-              validates field.name, presence: true
-            end
+            # @todo Temporary disabled presence validation
+            # if field.required?
+            #   validates field.name, presence: true
+            # end
 
             fields << field
           end
@@ -105,11 +106,15 @@ module SuperbTextConstructor
           end
         end
 
+        def nested?
+          blockable.class.superclass == SuperbTextConstructor::Block
+        end
+
         private
 
           # Adds new block to the end of list (with max+1 position)
           def set_position
-            if self.class.superclass == SuperbTextConstructor::Block
+            if nested?
               self.position = 1
             else
               self.position = blockable.reload.blocks.map(&:position).max.to_i + 1
@@ -118,7 +123,7 @@ module SuperbTextConstructor
 
           # Recalculates positions for the blocks after destroyed block
           def recalculate_positions
-            return true if self.class.superclass == SuperbTextConstructor::Block
+            return true if nested?
             blocks = blockable.reload.blocks.where('position > ?', position)
             blocks.each_with_index do |block, index|
               block.update_column(:position, position + index)

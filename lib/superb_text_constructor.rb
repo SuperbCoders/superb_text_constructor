@@ -1,6 +1,7 @@
 # Rails stuff
 require 'superb_text_constructor/engine'
 require 'superb_text_constructor/view_helpers/render_blocks_helper'
+require 'superb_text_constructor/view_helpers/editor_helper'
 require 'superb_text_constructor/view_helpers/sanitize_block_helper'
 require 'superb_text_constructor/route_mappings'
 
@@ -9,8 +10,8 @@ require 'carrierwave'
 require 'carrierwave/orm/activerecord'
 require 'carrierwave-serializable'
 
-# Nested form stuff
-require 'nested_form'
+# jQuery fileupload stuff
+require 'jquery-fileupload-rails'
 
 # Internal classes
 require 'superb_text_constructor/namespace'

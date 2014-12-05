@@ -10,49 +10,52 @@ module SuperbTextConstructor
 
         before_action :set_namespace
         before_action :set_parent
-        before_action :set_block, only: [:edit, :update, :destroy]
+        before_action :set_block, only: [:create_nested, :update, :destroy]
 
         # GET /
         def index
           @blocks = @parent.blocks
         end
 
-        # GET /blocks/new
-        def new
-          @block = @parent.blocks.build(type: block_class_name)
-          if @block.auto?
-            @block.save
-            redirect_to root_url
-          end
-        end
-
-        # POST /blocks/:id
+        # POST /blocks
         def create
-          @block = @parent.blocks.build(block_params)
+          @block = @parent.blocks.build(type: block_class_name)
           if @block.save
-            redirect_to root_url
+            render json: { block: @block,
+                           html: render_to_string(partial: 'superb_text_constructor/blocks/editor/block', object: @block, as: :block) } 
           else
-            render 'new'
+            render json: @block.errors, status: :unprocessable_entity
           end
         end
 
-        # GET /blocks/:id/edit
-        def edit
+        # POST /blocks/:block_id/create_nested
+        def create_nested
+          @nested_block = @block.send(params[:association]).build(type: block_class_name)
+          @nested_block.assign_attributes(block_params) if params[required_params].present?
+          if @nested_block.save
+            partial = lookup_context.template_exists?("superb_text_constructor/blocks/forms/#{@nested_block.template}", nil, true) ? "superb_text_constructor/blocks/forms/#{@nested_block.template}" : 'superb_text_constructor/blocks/nested_fields'
+            render json: { block: @nested_block,
+                           html: render_to_string(partial: partial, object: @nested_block, as: :block) }
+          else
+            render json: @nested_block.errors, status: :unprocessable_entity
+          end
         end
 
         # PATCH/PUT /blocks/:id
         def update
           if @block.update_attributes(block_params)
-            redirect_to root_url
+            @rendered_block = @block.nested? ? @block.blockable : @block
+            render json: { block: @rendered_block,
+                         html: render_to_string(partial: 'superb_text_constructor/blocks/editor/block', locals: { block: @rendered_block }) } 
           else
-            render 'edit'
+            render json: @block.errors, status: :unprocessable_entity
           end
         end
 
         # DELETE /blocks/:id
         def destroy
           @block.destroy
-          redirect_to root_url
+          render json: { nested: @block.nested? }
         end
 
         # POST /blocks/reorder

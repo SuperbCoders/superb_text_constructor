@@ -23,3 +23,7 @@ en:
       save: Save
       are_you_sure: Are you sure?
       remove: Remove
+      cancel: Cancel
+
+    messages:
+      block_was_not_created: Block was not created

@@ -5,6 +5,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 require "superb_text_constructor"
 require "jquery-rails"
+require "mini_magick"
 
 module Dummy
   class Application < Rails::Application

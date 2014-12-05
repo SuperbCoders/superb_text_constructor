@@ -18,4 +18,6 @@
   <a class="right carousel-control" data-slide="next" href="#carousel-<%= block.id %>" role="button"><span class="glyphicon glyphicon-chevron-right"></span><span class="sr-only">Next</span></a>
 </div>
 
-<script type="text/javascript">$('#carousel-<%= block.id %>').carousel();</script>
+<% if block.images.any? %>
+  <script type="text/javascript">$('#carousel-<%= block.id %>').carousel();</script>
+<% end %>
