@@ -5,7 +5,7 @@ module SuperbTextConstructor
       # It allows you to inherit from this class and override it if neccessary.
       # Run `rails g superb_text_contstructor:controller` to create a controller to override
       # @todo Create this generator :)
-      class BlocksController < ActionController::Base
+      class BlocksController < ::ApplicationController
         layout 'superb_text_constructor/application'
 
         before_action :set_namespace

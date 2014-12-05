@@ -20,12 +20,12 @@ require 'superb_text_constructor/field'
 # Concerns
 require 'superb_text_constructor/concerns/models/block'
 require 'superb_text_constructor/concerns/models/blockable'
-require 'superb_text_constructor/concerns/controllers/blocks_controller'
 
 module SuperbTextConstructor
 
   def self.configure(&block)
     instance_eval(&block)
+    require 'superb_text_constructor/concerns/controllers/blocks_controller'
   end
 
   def self.namespace(name, &block)
