@@ -50,6 +50,7 @@ SuperbTextConstructor.configure do
       use :h3
       block :h4 do
         field :text
+        field :colorize, type: TrueClass
       end
     end
     group :images do

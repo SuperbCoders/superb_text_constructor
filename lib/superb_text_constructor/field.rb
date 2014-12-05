@@ -41,7 +41,10 @@ module SuperbTextConstructor
 
     def partial(value = nil)
       if value.nil?
-        @partial ||= type.name.to_s.underscore
+        @partial ||= case type.name
+        when 'TrueClass', 'FalseClass' then 'checkbox'
+        else type.name.to_s.underscore
+        end
       else
         @partial = value
         self

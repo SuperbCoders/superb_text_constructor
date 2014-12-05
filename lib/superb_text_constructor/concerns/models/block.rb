@@ -58,7 +58,10 @@ module SuperbTextConstructor
 
               define_method "#{field.name}=" do |value|
                 self.data ||= {}
-                self.data[field.name] = value
+                case field.type.name
+                when 'TrueClass', 'FalseClass' then self.data[field.name] = value.present? && value.to_s != '0'
+                else self.data[field.name] = value
+                end
               end
 
               define_method "#{field.name}_was" do

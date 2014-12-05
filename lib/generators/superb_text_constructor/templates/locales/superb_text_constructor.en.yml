@@ -1,7 +1,7 @@
 en:
   activerecord:
     attributes:
-      block:
+      superb_text_constructor/block:
         text: Text
         image: Image
 
