@@ -53,19 +53,19 @@ module SuperbTextConstructor
             # Or define methods for reading and writing to the field
             else
               define_method field.name do
-                data.try(:fetch, field.name, nil)
+                data.try(:fetch, field.name.to_s, nil)
               end
 
               define_method "#{field.name}=" do |value|
                 self.data ||= {}
                 case field.type.name
-                when 'TrueClass', 'FalseClass' then self.data[field.name] = value.present? && value.to_s != '0'
-                else self.data[field.name] = value
+                when 'TrueClass', 'FalseClass' then self.data[field.name.to_s] = value.present? && value.to_s != '0'
+                else self.data[field.name.to_s] = value
                 end
               end
 
               define_method "#{field.name}_was" do
-                data_was.try(:fetch, field.name)
+                data_was.try(:fetch, field.name.to_s)
               end
 
               define_method "#{field.name}_changed?" do
