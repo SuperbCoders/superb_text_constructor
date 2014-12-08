@@ -96,6 +96,7 @@ module SuperbTextConstructor
               if field.nested?
                 permitted_attributes << { "#{field.name}_attributes" => [field.type.fields.map(&:name).map(&:to_sym), :id, :_destroy].flatten }
               end
+              (permitted_attributes << { field.name.to_sym => [] }) if field.type.name == 'Array'
             end
             permitted_attributes << :type
             permitted_attributes.uniq
