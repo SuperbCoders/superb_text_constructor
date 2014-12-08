@@ -115,19 +115,22 @@ module SuperbTextConstructor
 
         private
 
+          def nested_association_name
+            if nested?
+              self.class.name.gsub(blockable.class.name, '').underscore.pluralize.to_sym
+            else
+              :blocks
+            end
+          end
+
           # Adds new block to the end of list (with max+1 position)
           def set_position
-            if nested?
-              self.position = 1
-            else
-              self.position = blockable.reload.blocks.map(&:position).max.to_i + 1
-            end
+            self.position = blockable.reload.send(nested_association_name).map(&:position).max.to_i + 1
           end
 
           # Recalculates positions for the blocks after destroyed block
           def recalculate_positions
-            return true if nested?
-            blocks = blockable.reload.blocks.where('position > ?', position)
+            blocks = blockable.reload.send(nested_association_name).where('position > ?', position)
             blocks.each_with_index do |block, index|
               block.update_column(:position, position + index)
             end
