@@ -48,6 +48,7 @@ $ ->
   # Update
   $('body').on 'ajax:success', '.block .block-form', (event, data) ->
     $(this).closest('.block').replaceWith(data.html)
+    initSingleFileupload()
 
   $('body').on 'ajax:error', '.block-form', (event, data) ->
     alert('Can not update block')
