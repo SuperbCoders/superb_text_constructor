@@ -1,0 +1,10 @@
+<span id="superb-input-<%= block.id %>" data-url="<%= block_path(block) %>" data-attribute="<%= attribute.to_s %>" data-template="<%= block.template %>" data-type="<%= block.type %>">
+  <% data = block.send(attribute) %>
+  <% value = data.to_s == '' ? '___' : data %>
+  <span class="content"><%= sanitize_block value %></span>
+  <%= text_field_tag attribute, data, class: 'input', style: 'display: none;' %>
+</span>
+
+<script>
+  new SuperbTextConstructor.TextField('#superb-input-<%= block.id %>')
+</script>

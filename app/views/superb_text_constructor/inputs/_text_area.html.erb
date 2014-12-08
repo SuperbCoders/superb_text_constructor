@@ -1,0 +1,9 @@
+<span id="superb-input-<%= block.id %>" data-url="<%= block_path(block) %>" data-attribute="<%= attribute.to_s %>" data-template="<%= block.template %>" data-type="<%= block.type %>">
+  <% data = block.send(attribute) %>
+  <% value = data.to_s == '' ? '___' : data %>
+  <%= sanitize_block_with_paragraphs value %>
+</span>
+
+<script>
+  new SuperbTextConstructor.TextArea('#superb-input-<%= block.id %>')
+</script>

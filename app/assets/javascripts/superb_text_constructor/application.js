@@ -17,6 +17,7 @@
 //= require ./bootstrap-sprockets
 //= require ./blocks
 //= require_tree ./blocks
+//= require_tree ./inputs
 
 $(document).bind('dragover', function (e)
 {

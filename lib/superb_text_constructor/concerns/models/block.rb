@@ -18,9 +18,8 @@ module SuperbTextConstructor
           validates :position, presence: true, numericality: { only_integer: true, greater_than: 0 }
         end
 
-        # @return [Boolean] whether block could be created without any actions by user
         def auto?
-          fields.empty?
+          self.class.auto?
         end
 
         # Copies all the attributes from another block
@@ -94,6 +93,19 @@ module SuperbTextConstructor
             has_many nested_name, class_name: klass.name, as: :blockable, dependent: :destroy, inverse_of: :blockable
             accepts_nested_attributes_for name, allow_destroy: true
             fields << field
+          end
+
+          # @return [Boolean] whether block could be created without any actions by user
+          def auto?
+            if @auto.nil?
+              fields.empty?
+            else
+              @auto
+            end
+          end
+
+          def auto(value = true)
+            @auto = value
           end
 
           def fields

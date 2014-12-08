@@ -15,6 +15,14 @@ module SuperbTextConstructor
         end
       end
 
+      def superb_text_field(block, attribute)
+        render partial: 'superb_text_constructor/inputs/text_field', object: block, as: :block, locals: { attribute: attribute }
+      end
+
+      def superb_text_area(block, attribute)
+        render partial: 'superb_text_constructor/inputs/text_area', object: block, as: :block, locals: { attribute: attribute }
+      end
+
     end
   end
 end

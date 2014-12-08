@@ -1,6 +1,7 @@
 SuperbTextConstructor.configure do
 
   block :h2 do
+    auto
     field :text do
       type String
       partial :string
@@ -9,6 +10,7 @@ SuperbTextConstructor.configure do
   end
 
   block :h3 do
+    auto
     field :text do
       type String
       partial :string
@@ -17,6 +19,7 @@ SuperbTextConstructor.configure do
   end
 
   block :text do
+    auto
     field :text do
       type String
       partial :text

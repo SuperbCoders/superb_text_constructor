@@ -1,14 +1,22 @@
 module SuperbTextConstructor
   module ViewHelpers
     module SanitizeBlockHelper
+      ALLOWED_TAGS = %w(a b i img span br)
+      ALLOWED_ATTRIBUTES = %w(id class style src href target)
 
       # Removes forbidden tags from text
       # @param text [String] original text
       # @return [ActiveSupport::SafeBuffer] HTML safe text with permitted only tags
       def sanitize_block(text)
-        sanitize(text.to_s, tags: %w(a b i img span br), attributes: %w(id class style src href target))
+        sanitize(text.to_s, tags: ALLOWED_TAGS, attributes: ALLOWED_ATTRIBUTES)
       end
 
+      # Removes forbidden tags from text, but additionaly allows <p>
+      # @param text [String] original text
+      # @return [ActiveSupport::SafeBuffer] HTML safe text with permitted only tags
+      def sanitize_block_with_paragraphs(text)
+        sanitize(text.to_s, tags: ALLOWED_TAGS + %w(p), attributes: ALLOWED_ATTRIBUTES)
+      end
 
       # Adds HTML markup to plain text with paragraphs separated by new lines and removes forbidden tags.
       # @param text [String] original text
