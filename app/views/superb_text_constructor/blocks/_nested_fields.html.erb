@@ -1,12 +1,16 @@
-<div class="nested-block well fields">
-  <%= form_for block, url: block_path(block), remote: true, html: { class: 'form-horizontal block-form' } do |f| %>
-    <%= hidden_field_tag :type, block.type %>
-    <%= f.hidden_field :type %>
-    <% block.fields.each do |field| %>
-      <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: f, field: field } %>
+<% if lookup_context.template_exists?("superb_text_constructor/blocks/forms/#{block.template}", nil, true) %>
+  <%= render "superb_text_constructor/blocks/forms/#{block.template}" %>
+<% else %>
+  <div class="nested-block well fields">
+    <%= form_for block, url: block_path(block), remote: true, html: { class: 'form-horizontal block-form' } do |f| %>
+      <%= hidden_field_tag :type, block.type %>
+      <%= f.hidden_field :type %>
+      <% block.fields.each do |field| %>
+        <%= render partial: "superb_text_constructor/blocks/fields/#{field.partial}", locals: { f: f, field: field } %>
+      <% end %>
     <% end %>
-  <% end %>
-  <%= link_to block_path(block), method: :delete, remote: true, class: 'destroy btn btn-danger' do %>
-    <i class="glyphicon glyphicon-trash"></i>
-  <% end %>
-</div>
+    <%= link_to block_path(block), method: :delete, remote: true, class: 'destroy btn btn-danger' do %>
+      <i class="glyphicon glyphicon-trash"></i>
+    <% end %>
+  </div>
+<% end %>
