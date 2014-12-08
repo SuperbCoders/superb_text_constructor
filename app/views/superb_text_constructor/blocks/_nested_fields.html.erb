@@ -1,5 +1,5 @@
 <% if lookup_context.template_exists?("superb_text_constructor/blocks/forms/#{block.template}", nil, true) %>
-  <%= render "superb_text_constructor/blocks/forms/#{block.template}" %>
+  <%= render partial: "superb_text_constructor/blocks/forms/#{block.template}", object: block, as: :block %>
 <% else %>
   <div class="nested-block well fields">
     <%= form_for block, url: block_path(block), remote: true, html: { class: 'form-horizontal block-form' } do |f| %>
