@@ -45,7 +45,7 @@ module SuperbTextConstructor
         def update
           if @block.update_attributes(block_params)
             @rendered_block = @block.nested? ? @block.blockable : @block
-            render json: { block: @rendered_block,
+            render json: { block: @block,
                          html: render_to_string(partial: 'superb_text_constructor/blocks/editor/block', locals: { block: @rendered_block }) } 
           else
             render json: @block.errors, status: :unprocessable_entity
