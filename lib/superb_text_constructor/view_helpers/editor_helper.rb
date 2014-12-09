@@ -23,6 +23,10 @@ module SuperbTextConstructor
         render partial: 'superb_text_constructor/inputs/text_area', object: block, as: :block, locals: { attribute: attribute }
       end
 
+      def superb_check_box_tag(block, attribute)
+        render partial: 'superb_text_constructor/inputs/check_box_tag', object: block, as: :block, locals: { attribute: attribute }
+      end
+
     end
   end
 end

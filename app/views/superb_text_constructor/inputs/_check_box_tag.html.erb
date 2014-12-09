@@ -1,0 +1,7 @@
+<span id="superb-input-<%= attribute %>-<%= block.id %>" data-url="<%= block_path(block) %>" data-attribute="<%= attribute.to_s %>" data-template="<%= block.template %>" data-type="<%= block.type %>">
+  <%= check_box_tag attribute, '1', block.send(attribute), class: 'control-input' %>
+</span>
+
+<script>
+  new SuperbTextConstructor.CheckBox('#superb-input-<%= attribute %>-<%= block.id %>')
+</script>
