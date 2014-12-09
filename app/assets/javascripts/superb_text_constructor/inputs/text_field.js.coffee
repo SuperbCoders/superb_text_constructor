@@ -3,16 +3,16 @@ window.SuperbTextConstructor or= {}
 window.SuperbTextConstructor.TextField = class TextField extends SuperbTextConstructor.Input
   constructor: (selector) ->
     super
-    @content = @el.find('.content')
-    @input = @el.find('.input')
+    @content = @el.find('.control-content')
+    @input = @el.find('.control-input')
 
   setHandlers: =>
     super
 
-    $('body').on 'focusout', "#{@selector} .input", =>
+    $('body').on 'focusout', "#{@selector} .control-input", =>
       @sendRequest()
 
-    $('body').on 'keyup', "#{@selector} .input", (e) =>
+    $('body').on 'keyup', "#{@selector} .control-input", (e) =>
       @sendRequest() if e.keyCode == 13
 
   contentToData: =>
