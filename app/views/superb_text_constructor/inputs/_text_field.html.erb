@@ -1,4 +1,4 @@
-<span id="superb-input-<%= block.id %>" data-url="<%= block_path(block) %>" data-attribute="<%= attribute.to_s %>" data-template="<%= block.template %>" data-type="<%= block.type %>">
+<span id="superb-input-<%= attribute %>-<%= block.id %>" data-url="<%= block_path(block) %>" data-attribute="<%= attribute.to_s %>" data-template="<%= block.template %>" data-type="<%= block.type %>">
   <% data = block.send(attribute) %>
   <% value = data.to_s == '' ? '___' : data %>
   <span class="control-content"><%= sanitize_block value %></span>
@@ -6,5 +6,5 @@
 </span>
 
 <script>
-  new SuperbTextConstructor.TextField('#superb-input-<%= block.id %>')
+  new SuperbTextConstructor.TextField('#superb-input-<%= attribute %>-<%= block.id %>')
 </script>
