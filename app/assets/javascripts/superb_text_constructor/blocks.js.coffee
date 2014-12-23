@@ -1,3 +1,21 @@
+window.initSingleFileupload = ->
+  $('.single-fileupload').each ->
+    $(this).fileupload
+      type: 'PATCH'
+      dropZone: $(this).closest('.dropzone')
+      add: (e, data) ->
+        data.submit()
+      done: (e, data) ->
+        $(this).closest('.block').replaceWith(data.result.html)
+        $block = $("##{data.result.block.id}")
+        $form = $block.find('.form')
+        if $form.length
+          $form.show()
+          $block.find('.content').hide()
+        initSingleFileupload()
+      fail: (e, data) ->
+        alert "Не удалось загрузить файл #{file.name}"
+
 $ ->
   $('.blocks').sortable
     placeholder: "ui-state-highlight"
@@ -59,23 +77,5 @@ $ ->
       $(this).closest('.nested-block').fadeOut()
     else
       $(this).closest('.block').fadeOut()
-
-  initSingleFileupload = ->
-    $('.single-fileupload').each ->
-      $(this).fileupload
-        type: 'PATCH'
-        dropZone: $(this).closest('.dropzone')
-        add: (e, data) ->
-          data.submit()
-        done: (e, data) ->
-          $(this).closest('.block').replaceWith(data.result.html)
-          $block = $("##{data.result.block.id}")
-          $form = $block.find('.form')
-          if $form.length
-            $form.show()
-            $block.find('.content').hide()
-          initSingleFileupload()
-        fail: (e, data) ->
-          alert "Не удалось загрузить файл #{file.name}"
 
   initSingleFileupload()
