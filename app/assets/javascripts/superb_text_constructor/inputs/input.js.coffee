@@ -1,7 +1,8 @@
 window.SuperbTextConstructor or= {}
 
 window.SuperbTextConstructor.Input = class Input
-  constructor: (@selector) ->
+  constructor: (selector) ->
+    @selector = selector
     @el = $(selector)
     @url = @el.data('url')
     @attribute = @el.data('attribute')
