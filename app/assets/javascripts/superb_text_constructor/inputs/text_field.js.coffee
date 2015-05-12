@@ -1,7 +1,7 @@
 window.SuperbTextConstructor or= {}
 
 window.SuperbTextConstructor.TextField = class TextField extends SuperbTextConstructor.Input
-  constructor: (selector) ->
+  constructor: (@selector) ->
     super
     @content = @el.find('.control-content')
     @input = @el.find('.control-input')
